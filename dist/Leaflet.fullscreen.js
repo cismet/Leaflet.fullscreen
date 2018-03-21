@@ -50,20 +50,16 @@
 
     L.Map.include({
         isFullscreen: function () {
-            return this._isFullscreen || false;
-        },
-
-        getFullScreenContainer() {
-            return this.fullScreenContainer || this.getContainer();
-        },
-        
-        setFullScreenContainer(container) {
-            this.fullScreenContainer=container || this.getContainer();
+            return this._isFullscreen || 
+            document.fullscreenElement || 
+            document.mozFullScreenElement || 
+            document.webkitFullscreenElement ||
+            document.msFullscreenElement
+            || false;
         },
 
         toggleFullscreen: function (options) {
-            this.setFullScreenContainer(options.container);
-            var container = this.getFullScreenContainer();
+            var container = options.container||this.getContainer();
             if (this.isFullscreen()) {
                 if (options && options.pseudoFullscreen) {
                     this._disablePseudoFullscreen(container);
@@ -110,7 +106,7 @@
 
         _setFullscreen: function(fullscreen) {
             this._isFullscreen = fullscreen;
-            var container = this.getFullScreenContainer();
+            var container = this.getContainer();
             if (fullscreen) {
                 L.DomUtil.addClass(container, 'leaflet-fullscreen-on');
             } else {
@@ -126,10 +122,10 @@
                 document.webkitFullscreenElement ||
                 document.msFullscreenElement;
 
-            if (fullscreenElement === this.getFullScreenContainer() && !this._isFullscreen) {
+            if (fullscreenElement === this.getContainer() && !this._isFullscreen) {
                 this._setFullscreen(true);
                 this.fire('fullscreenchange');
-            } else if (fullscreenElement !== this.getFullScreenContainer() && this._isFullscreen) {
+            } else if (fullscreenElement !== this.getContainer() && this._isFullscreen) {
                 this._setFullscreen(false);
                 this.fire('fullscreenchange');
             }
@@ -160,7 +156,6 @@
 
         if (fullscreenchange) {
             var onFullscreenChange = L.bind(this._onFullscreenChange, this);
-
 
             this.whenReady(function () {
                 L.DomEvent.on(document, fullscreenchange, onFullscreenChange);
