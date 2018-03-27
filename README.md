@@ -48,6 +48,25 @@ map.addControl(new L.Control.Fullscreen({
 }));
 ```
 
+### Custom container
+
+To change the container for the fullscreen API just add it to the options:
+
+``` js
+map.addControl(new L.Control.Fullscreen({
+    'container': document.documentElement,
+    //...
+    //more options here    
+    }
+}));
+```
+
+### Note 
+
+will try to fork that into the original project on https://github.com/cismet/Leaflet.fullscreen. 
+
+
+
 ### Including via CDN
 
 Leaflet.fullscreen is [available through the Mapbox Plugin CDN](https://www.mapbox.com/mapbox.js/plugins/#leaflet-fullscreen) - just copy this include:

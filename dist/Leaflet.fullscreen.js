@@ -62,7 +62,10 @@
 
         toggleFullscreen: function (options) {
             this.setFullScreenContainer(options.container);
-            var container = this.getFullScreenContainer();
+            var container = this.getFullScreenContainer();            
+            if (options.container && L.DomUtil.hasClass(this.getContainer(),"leaflet-touch")){
+                L.DomUtil.addClass(container, "leaflet-touch");
+            }
             if (this.isFullscreen()) {
                 if (options && options.pseudoFullscreen) {
                     this._disablePseudoFullscreen(container);
